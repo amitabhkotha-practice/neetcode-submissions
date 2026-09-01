@@ -1,0 +1,43 @@
+class Solution {
+    int[][] dirs = {{0, 1}, {0, -1}, {1, 0}, {-1, 0}};
+
+    public void solve(char[][] board) {
+        int m = board.length;
+        int n = board[0].length;
+
+        // top row and bottom row
+        for (int j = 0; j < n; j++) {
+            dfs(board, 0, j);
+            dfs(board, m - 1, j);
+        }
+
+        // left col and right col
+        for (int i = 0; i < m; i++) {
+            dfs(board, i, 0);
+            dfs(board, i, n - 1);
+        }
+
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
+                if (board[i][j] == 'O') {
+                    board[i][j] = 'X';
+                } else if (board[i][j] == '#') {
+                    board[i][j] = 'O';
+                }
+            }
+        }
+    }
+
+    public void dfs(char[][] board, int i, int j) {
+        if (i < 0 || j < 0 || i >= board.length || j >= board[0].length || board[i][j] != 'O')
+            return;
+
+        board[i][j] = '#';
+
+        for (int[] dir : dirs) {
+            int x = dir[0] + i;
+            int y = dir[1] + j;
+            dfs(board, x, y);
+        }
+    }
+}
